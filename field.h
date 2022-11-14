@@ -11,6 +11,7 @@ private:
         int x, y, value;
         bool isMarked, isOpened;
         Point(int x, int y, int value);
+        void increase();
     };
 
 public:

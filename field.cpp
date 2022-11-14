@@ -5,7 +5,7 @@
 
 #define BOMBVALUE 9
 
-Field::Field(int x, int y, int bombs):size_x(y), size_y(x), count_points(x*y), bombs(bombs){
+Field::Field(int x, int y, int bombs):size_x(x), size_y(x), count_points(x*y), bombs(bombs){
     if(count_points <= bombs*4 || bombs < 1){
         //std::cout << "Bombs have been set to a quarter of all nodes due to the the amount being too large" << std::endl;
         bombs = count_points / 5;
@@ -24,24 +24,73 @@ Field::Field(int x, int y, int bombs):size_x(y), size_y(x), count_points(x*y), b
     }
 
 }
+
 void Field::setup(int start_x, int start_y){
     srand (time(NULL));
     auto bombsPlanted = 0;
     while(bombsPlanted < bombs){
         auto bomb_x = rand() % size_x;
         auto bomb_y = rand() % size_y;
+
+        std::cout << "rand" << bomb_x << " " << bomb_y << " " << bombsPlanted << std::endl;
+
+        //If the coordinates point to the start location or the neighboring points, skip
         if((abs(bomb_x - start_x) < 2 && abs(bomb_y - start_y) < 2) || field[bomb_x][bomb_y].value == BOMBVALUE){
             continue;
-        }else{
-            ++bombsPlanted;
-            field[bomb_x][bomb_y].value = BOMBVALUE;
         }
-        
+        ++bombsPlanted;
+        field[bomb_x][bomb_y].value = BOMBVALUE;
+
+        //Increase value of neighboring points
+        if(bomb_x  > 0 && bomb_x < size_x-1){
+            field[bomb_x-1][bomb_y].increase();
+            field[bomb_x+1][bomb_y].increase();
+            if(bomb_y > 0){
+                field[bomb_x-1][bomb_y-1].increase();
+                field[bomb_x][bomb_y-1].increase();
+                field[bomb_x+1][bomb_y-1].increase();
+            }
+            if(bomb_y < size_y-1){
+                field[bomb_x-1][bomb_y+1].increase();
+                field[bomb_x][bomb_y+1].increase();
+                field[bomb_x+1][bomb_y+1].increase();
+            }
+        }else if(bomb_x == 0){
+            field[bomb_x+1][bomb_y].increase();
+            if(bomb_y > 0){
+                field[bomb_x][bomb_y-1].increase();
+                field[bomb_x+1][bomb_y-1].increase();
+            }
+            if(bomb_y < size_y-1){
+                field[bomb_x][bomb_y+1].increase();
+                field[bomb_x+1][bomb_y+1].increase();
+            }
+        }else if(bomb_x < size_x-1){
+            field[bomb_x-1][bomb_y].increase();
+            if(bomb_y > 0){
+                field[bomb_x][bomb_y-1].increase();
+                field[bomb_x-1][bomb_y-1].increase();
+            }
+            if(bomb_y < size_y-1){
+                field[bomb_x][bomb_y+1].increase();
+                field[bomb_x-1][bomb_y+1].increase();
+            }
+        }
     }
 }
+
 Field::~Field(){}
 Field::Point::Point(int x, int y, int value){
     Field::Point::x = x;
     Field::Point::y = y;
     Field::Point::value = value;
+    Field::Point::isMarked = false;
+    Field::Point::isOpened = false;
+}
+
+void Field::Point::increase(){
+    std::cout << "increase " << this->x << " " << this->y << " " << this->value << std::endl;
+    if(this->value != BOMBVALUE){
+        this->value++;
+    }
 }
