@@ -1,7 +1,7 @@
 #ifndef FIELD_H
 #define FIELD_H
 #include <vector>
-
+#include <string>
 
 
 class Field {
@@ -12,6 +12,7 @@ private:
         bool isMarked, isOpened;
         Point(int x, int y, int value);
         void increase();
+        char print();
     };
 
 public:
@@ -20,6 +21,7 @@ public:
     Field(int x, int y, int bombs);
     ~Field();
     void setup(int start_x, int start_y);
+    void open(int x, int y);
 
 };
 
