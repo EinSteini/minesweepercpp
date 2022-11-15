@@ -67,7 +67,7 @@ void Field::setup(int start_x, int start_y){
                 field[bomb_x][bomb_y+1].increase();
                 field[bomb_x+1][bomb_y+1].increase();
             }
-        }else if(bomb_x < size_x-1){
+        }else if(bomb_x == size_x-1){
             field[bomb_x-1][bomb_y].increase();
             if(bomb_y > 0){
                 field[bomb_x][bomb_y-1].increase();

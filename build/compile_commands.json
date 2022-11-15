@@ -1,0 +1,12 @@
+[
+{
+  "directory": "/Users/i569567/Library/CloudStorage/OneDrive-SAPSE/C++_Experiments/minesweeper/build",
+  "command": "/usr/bin/clang++   -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -o CMakeFiles/minesweeper.dir/main.cpp.o -c /Users/i569567/Library/CloudStorage/OneDrive-SAPSE/C++_Experiments/minesweeper/main.cpp",
+  "file": "/Users/i569567/Library/CloudStorage/OneDrive-SAPSE/C++_Experiments/minesweeper/main.cpp"
+},
+{
+  "directory": "/Users/i569567/Library/CloudStorage/OneDrive-SAPSE/C++_Experiments/minesweeper/build",
+  "command": "/usr/bin/clang++   -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -o CMakeFiles/minesweeper.dir/field.cpp.o -c /Users/i569567/Library/CloudStorage/OneDrive-SAPSE/C++_Experiments/minesweeper/field.cpp",
+  "file": "/Users/i569567/Library/CloudStorage/OneDrive-SAPSE/C++_Experiments/minesweeper/field.cpp"
+}
+]

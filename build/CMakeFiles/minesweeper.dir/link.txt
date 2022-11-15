@@ -1,0 +1,1 @@
+/usr/bin/clang++ -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/minesweeper.dir/main.cpp.o CMakeFiles/minesweeper.dir/field.cpp.o -o minesweeper 
