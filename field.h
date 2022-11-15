@@ -22,7 +22,7 @@ public:
     ~Field();
     void setup(int start_x, int start_y);
     void open(int x, int y);
-
+    void print(); 
 };
 
 #endif

@@ -2,15 +2,15 @@
 #include <stdio.h>
 #include <iostream>
 #include <stdlib.h>
-#include <sstream>
 #include <string>
 
 #define BOMBVALUE 9
 
-Field::Field(int x, int y, int bombs):size_x(x), size_y(y), count_points(x*y), bombs(bombs){
+
+Field::Field(int x, int y, int pbombs):size_x(x), size_y(y), count_points(x*y), bombs(pbombs){
     if(count_points <= bombs*4 || bombs < 1){
-        //std::cout << "Bombs have been set to a quarter of all nodes due to the the amount being too large" << std::endl;
-        bombs = count_points / 5;
+        std::cout << "Bombs have been set to a quarter of all nodes due to the the amount being too large" << std::endl;
+        Field::bombs = count_points / 5;
     }
     size_x = size_x < 4 ? 4 : size_x;
     size_y = size_y < 4 ? 4 : size_y;
@@ -121,6 +121,26 @@ void Field::open(int x, int y){
             Field::open(x-1, y+1);
         }
     }
+}
+void Field::print(){
+    std::string upperNumbers = "     ";
+    std::string horizontalLine = "   +-";
+    for(auto i=0;i<size_x;++i){
+        upperNumbers += (i>9 && i%2 == 1) ? "  " : std::to_string(i);
+        if(i<10) upperNumbers += " ";
+        horizontalLine += "--";
+    }
+    std::cout << upperNumbers << std::endl;
+    std::cout << horizontalLine << "+" << std::endl;
+    for(auto i=0;i<size_y;++i){
+        if(i<10) std::cout << "0";
+        std::cout << std::to_string(i) << " | ";
+        for(auto j=field.begin();j!=field.end();++j){
+            std::cout << (*j)[i].print() << " ";
+        }
+        std::cout << "|" << std::endl;
+    }
+    std::cout << horizontalLine << "+" << std::endl;
 }
 
 Field::~Field(){}
