@@ -7,8 +7,8 @@
 #define BOMBVALUE 9
 
 
-Field::Field(int x, int y, int pbombs):size_x(x), size_y(y), count_points(x*y), bombs(pbombs), win_count(pbombs){
-    
+Field::Field(int x, int y, int pbombs):size_x(x), size_y(y), count_points(x*y), bombs(pbombs){
+    win_count = count_points - bombs;
 
     //make point vector with default values
     for(auto i=0; i < size_x; ++i){
@@ -82,6 +82,7 @@ bool Field::open(int x, int y){
     if(field[x][y].value == BOMBVALUE) return true;
     if(field[x][y].isOpened) return false;
     field[x][y].isOpened = true;
+    --win_count;
     if(field[x][y].value != 0) return false;
     if(x > 0 && x < size_x-1){
         Field::open(x-1, y);
@@ -148,6 +149,9 @@ void Field::print(bool final){
 }
 
 void Field::mark(int x, int y){
+    if(field[x][y].value == BOMBVALUE) bombs += (field[x][y].isMarked) ? 1 : -1;
+    else bombs += (field[x][y].isMarked) ? -1 : 1; 
+
     field[x][y].isMarked = !field[x][y].isMarked;
 }
 Field::~Field(){}
@@ -175,6 +179,8 @@ char Field::Point::print(){
     }
     if(this->value == BOMBVALUE){
         return 'B';
+    }if(this->value == 0){
+        return ' ';
     }
     return std::to_string(this->value)[0];
 }

@@ -188,6 +188,11 @@ int main(){
                         break;
                     }
                 }
+                if(field.win_count == 0 || field.bombs == 0){
+                    field.print(true);
+                    std::cout << "Congratulations! You win. Try again below or quit by pressing Ctrl+C!" << std::endl;
+                    break;
+                }
                 field.print(false);
             }
         
