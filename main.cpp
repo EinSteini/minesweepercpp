@@ -82,7 +82,7 @@ int main(){
             break;
         
         }
-        Field field(height, width, bombs);
+        Field field(width, height, bombs);
 
         field.print(false);
 
@@ -130,7 +130,7 @@ int main(){
                 std::cout << "Please enter a number in between " << 0 << " and " << height-1 << " for y." << std::endl;
                 continue;
             }
-            field.setup(start_y, start_x);
+            field.setup(start_x, start_y);
             field.print(false);
             break;
         }

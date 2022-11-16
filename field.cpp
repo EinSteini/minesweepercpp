@@ -84,6 +84,7 @@ bool Field::open(int x, int y){
     field[x][y].isOpened = true;
     --win_count;
     if(field[x][y].value != 0) return false;
+    if(field[x][y].isMarked) Field::mark(x, y);
     if(x > 0 && x < size_x-1){
         Field::open(x-1, y);
         Field::open(x+1, y);
