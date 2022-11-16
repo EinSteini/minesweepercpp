@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <string>
+#include <sstream>
 
 #define MAX_X 100
 #define MAX_Y 100
@@ -15,7 +16,7 @@ int main(){
     int height = 8;
     int bombs = 10;
     while(true){
-        std::cout << "Welcome to Minesweeper!" << std::endl;
+        std::cout << std::endl << "Welcome to Minesweeper!" << std::endl;
 
         while(true){
             std::string input = "";
@@ -83,14 +84,113 @@ int main(){
         }
         Field field(height, width, bombs);
 
-        field.print();
+        field.print(false);
 
-        // field.setup(0, 0);
-        // field.open(3, 3);
-        //printField(field);
+        auto start_x = 0;
+        auto start_y = 0;
+        while(true){
+            std::string input = "";
+            std::cout << "Where do you want to start? (Enter x,y) ";
+            std::cin >> input;
+            std::stringstream ss(input);
+            std::vector<std::string> args;
+            while( ss.good() )
+            {
+                std::string substr;
+                std::getline( ss, substr, ',' );
+                args.push_back( substr );
+            }
+            if(args.size() != 2){
+                std::cout << "Please a enter valid input (\"x,y\")" << std::endl;
+                continue;
+            }
+            try{
+                start_x = std::stoi(args[0]);
+            }catch(std::invalid_argument){
+                std::cout << "Please a enter valid input (\"x,y\")" << std::endl;
+                continue;
+            }catch(std::out_of_range){
+                std::cout << "Please enter a number in between " << 0 << " and " << width-1 << "for x." << std::endl;
+                continue;
+            }
+            if(start_x < 0 || start_x >= width){
+                std::cout << "Please enter a number in between " << 0 << " and " << width-1 << "for x." << std::endl;
+                continue;
+            }
+            try{
+                start_y = std::stoi(args[1]);
+            }catch(std::invalid_argument){
+                std::cout << "Please a enter valid input (\"x,y\")" << std::endl;
+                continue;
+            }catch(std::out_of_range){
+                std::cout << "Please enter a number in between " << 0 << " and " << height-1 << " for y." << std::endl;
+                continue;
+            }
+            if(start_y < 0 || start_y >= height){
+                std::cout << "Please enter a number in between " << 0 << " and " << height-1 << " for y." << std::endl;
+                continue;
+            }
+            field.setup(start_y, start_x);
+            field.print(false);
+            break;
+        }
 
-
-        break;
+            while(true){
+                auto x = 0;
+                auto y = 0;
+                std::string input = "";
+                std::cout << "What point do you want to open? (Enter m,x,y; m for mode: f for flag, o for open) ";
+                std::cin >> input;
+                std::stringstream ss(input);
+                std::vector<std::string> args;
+                while( ss.good() )
+                {
+                    std::string substr;
+                    std::getline( ss, substr, ',' );
+                    args.push_back( substr );
+                }
+                if(args.size() != 3){
+                    std::cout << "Please a enter valid input (\"m,x,y\")" << std::endl;
+                    continue;
+                }
+                try{
+                    x = std::stoi(args[1]);
+                }catch(std::invalid_argument){
+                    std::cout << "Please a enter valid input (\"m,x,y\")" << std::endl;
+                    continue;
+                }catch(std::out_of_range){
+                    std::cout << "Please enter a number in between " << 0 << " and " << width-1 << " for x." << std::endl;
+                    continue;
+                }
+                if(x < 0 || x >= width){
+                    std::cout << "Please enter a number in between " << 0 << " and " << width-1 << " for x." << std::endl;
+                    continue;
+                }
+                try{
+                    y = std::stoi(args[2]);
+                }catch(std::invalid_argument){
+                    std::cout << "Please a enter valid input (\"m,x,y\")" << std::endl;
+                    continue;
+                }catch(std::out_of_range){
+                    std::cout << "Please enter a number in between " << 0 << " and " << height-1 << " for y." << std::endl;
+                    continue;
+                }
+                if(y < 0 || y >= height){
+                    std::cout << "Please enter a number in between " << 0 << " and " << height-1 << " for y." << std::endl;
+                    continue;
+                }
+                if(args[0] == "f"){
+                    field.mark(x, y);
+                }else if(args[0] == "o"){
+                    if(field.open(x, y)){
+                        field.print(true);
+                        std::cout << "That's a bomb! Try again below or quit by pressing Ctrl+C!" << std::endl;
+                        break;
+                    }
+                }
+                field.print(false);
+            }
+        
         
     }
 

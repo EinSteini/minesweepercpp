@@ -16,13 +16,14 @@ private:
     };
 
 public:
-    int size_x, size_y, bombs, count_points;
+    int size_x, size_y, bombs, count_points, win_count;
     std::vector< std::vector<Point> > field;
     Field(int x, int y, int bombs);
     ~Field();
     void setup(int start_x, int start_y);
-    void open(int x, int y);
-    void print(); 
+    bool open(int x, int y);
+    void print(bool final); 
+    void mark(int x, int y);
 };
 
 #endif

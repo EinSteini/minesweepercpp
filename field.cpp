@@ -7,13 +7,8 @@
 #define BOMBVALUE 9
 
 
-Field::Field(int x, int y, int pbombs):size_x(x), size_y(y), count_points(x*y), bombs(pbombs){
-    if(count_points <= bombs*4 || bombs < 1){
-        std::cout << "Bombs have been set to a quarter of all nodes due to the the amount being too large" << std::endl;
-        Field::bombs = count_points / 5;
-    }
-    size_x = size_x < 4 ? 4 : size_x;
-    size_y = size_y < 4 ? 4 : size_y;
+Field::Field(int x, int y, int pbombs):size_x(x), size_y(y), count_points(x*y), bombs(pbombs), win_count(pbombs){
+    
 
     //make point vector with default values
     for(auto i=0; i < size_x; ++i){
@@ -83,10 +78,11 @@ void Field::setup(int start_x, int start_y){
     Field::open(start_x, start_y);
 }
 
-void Field::open(int x, int y){
-    if(field[x][y].isOpened) return;
+bool Field::open(int x, int y){
+    if(field[x][y].value == BOMBVALUE) return true;
+    if(field[x][y].isOpened) return false;
     field[x][y].isOpened = true;
-    if(field[x][y].value != 0) return;
+    if(field[x][y].value != 0) return false;
     if(x > 0 && x < size_x-1){
         Field::open(x-1, y);
         Field::open(x+1, y);
@@ -121,8 +117,11 @@ void Field::open(int x, int y){
             Field::open(x-1, y+1);
         }
     }
+    return false;
 }
-void Field::print(){
+
+void Field::print(bool final){
+    std::cout << std::endl;
     std::string upperNumbers = "     ";
     std::string horizontalLine = "   +-";
     for(auto i=0;i<size_x;++i){
@@ -136,13 +135,21 @@ void Field::print(){
         if(i<10) std::cout << "0";
         std::cout << std::to_string(i) << " | ";
         for(auto j=field.begin();j!=field.end();++j){
+            if(final){
+                (*j)[i].isOpened = true;
+                (*j)[i].isMarked = false;
+            }
             std::cout << (*j)[i].print() << " ";
         }
         std::cout << "|" << std::endl;
     }
     std::cout << horizontalLine << "+" << std::endl;
+    std::cout << std::endl;
 }
 
+void Field::mark(int x, int y){
+    field[x][y].isMarked = !field[x][y].isMarked;
+}
 Field::~Field(){}
 Field::Point::Point(int x, int y, int value){
     Field::Point::x = x;
@@ -161,7 +168,7 @@ void Field::Point::increase(){
 
 char Field::Point::print(){
     if(this->isMarked){
-        return 'f';
+        return '>';
     }
     if(!this->isOpened){
         return 'X';
