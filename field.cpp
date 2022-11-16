@@ -150,6 +150,7 @@ void Field::print(bool final){
 }
 
 void Field::mark(int x, int y){
+    if(field[x][y].isOpened) return;
     if(field[x][y].value == BOMBVALUE) bombs += (field[x][y].isMarked) ? 1 : -1;
     else bombs += (field[x][y].isMarked) ? -1 : 1; 
 
